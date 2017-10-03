@@ -1,5 +1,7 @@
 package server.http;
 
+import static java.util.logging.Level.WARNING;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -30,9 +32,7 @@ class RequestHandler {
             try {
                 handleInternal();
             } catch (Exception e) {
-                LOGGER.warning("Exception encountered while processing request.");
-                e.printStackTrace();
-                LOGGER.warning(e::toString);
+                LOGGER.log(WARNING, "Exception encountered while processing request.", e);
             }
         });
     }

@@ -1,5 +1,7 @@
 package server.http;
 
+import static java.util.logging.Level.SEVERE;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -43,8 +45,7 @@ class ListenerWorker {
                 handler.handle();
             }
         } catch (Exception e) {
-            LOGGER.severe("Exception encountered in listener loop!");
-            LOGGER.severe(e::toString);
+            LOGGER.log(SEVERE, "Exception encountered in listener loop!", e);
         }
     }
 }

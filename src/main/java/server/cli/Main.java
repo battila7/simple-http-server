@@ -19,8 +19,6 @@ public class Main {
             final HttpServer httpServer = HttpServerFactory.makeServer(port, rootDirectory);
 
             httpServer.listen();
-
-            httpServer.shutdown();
         } catch (ServerCreationException e) {
             System.out.println("Could not create server!");
 
