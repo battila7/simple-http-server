@@ -61,6 +61,21 @@ class ResponseWriter {
             writeFileOK(path);
         }
     }
+    
+    void writeBadRequest() {
+        printOutput.print(statusLine(HttpStatus.BAD_REQUEST));
+        printOutput.flush();
+    }
+
+    void writeForbidden() {
+        printOutput.print(statusLine(HttpStatus.FORBIDDEN));
+        printOutput.flush();
+    }
+
+    void writeInternalServerError() {
+        printOutput.print(statusLine(HttpStatus.INTERNAL_SERVER_ERROR));
+        printOutput.flush();
+    }
 
     void writeNotFound() {
         printOutput.print(statusLine(HttpStatus.NOT_FOUND));
@@ -108,10 +123,10 @@ class ResponseWriter {
         final byte[] buffer = new byte[COPY_BUFFER_SIZE];
         int readCount;
 
-        final FileInputStream inputStream = new FileInputStream(path.toFile());
-
-        while ((readCount = inputStream.read(buffer)) > 0) {
-            output.write(buffer, 0, readCount);
+        try(final FileInputStream inputStream = new FileInputStream(path.toFile())) {
+            while ((readCount = inputStream.read(buffer)) > 0) {
+                output.write(buffer, 0, readCount);
+            }
         }
     }
 

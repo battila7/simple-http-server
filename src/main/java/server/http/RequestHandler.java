@@ -1,14 +1,15 @@
 package server.http;
 
-import static java.util.logging.Level.WARNING;
-
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.WARNING;
 
 class RequestHandler {
     private static final Logger LOGGER = Logger.getLogger(RequestHandler.class.getName());
@@ -37,33 +38,75 @@ class RequestHandler {
         });
     }
 
-    private void handleInternal() throws IOException, MalformedRequestException {
+    private void handleInternal() throws IOException {
         try (OutputStream output = socket.getOutputStream();
              PrintWriter printOutput = new PrintWriter(output);
              BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            final RequestLine requestLine = parseRequestLine(input.readLine());
-
             final ResponseWriter responseWriter = new ResponseWriter(output, printOutput);
 
-            if (!isMethodAllowed(requestLine)) {
-                LOGGER.info("Sending method not allowed response...");
+            respond(input.readLine(), responseWriter);
 
-                responseWriter.writeMethodNotAllowed();
-            } else if (!resourceExists(requestLine)) {
-                LOGGER.info("Sending not found response...");
-
-                responseWriter.writeNotFound();
-            } else {
-                LOGGER.info("Resource found!");
-
-                responseWriter.writeFile(resolvedPath(requestLine));
-            }
         } finally {
             socket.close();
 
             LOGGER.info("Socket closed, transmission over.");
         }
+    }
+
+    private void respond(final String line, final ResponseWriter responseWriter){
+        try {
+            final RequestLine requestLine = parseRequestLine(line);
+            ProcessChain.of(requestLine, responseWriter)
+                    .process(this::checkMethodAllowed)
+                    .process(this::checkResourceExists)
+                    .process(this::checkReadAllowed)
+                    .process(this::writeOk);
+        } catch (MalformedRequestException e) {
+            responseWriter.writeBadRequest();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (Exception e) {
+            responseWriter.writeInternalServerError();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    private boolean writeOk(final RequestLine requestLine, final ResponseWriter responseWriter) {
+        LOGGER.info("Resource found!");
+        try {
+            responseWriter.writeFile(resolvedPath(requestLine));
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+        return false;
+    }
+
+    private boolean checkReadAllowed(final RequestLine requestLine, final ResponseWriter responseWriter){
+
+        if(!resolvedPath(requestLine).toFile().canRead()){
+            LOGGER.info("Read file is not allowed");
+            responseWriter.writeForbidden();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkResourceExists(final RequestLine requestLine, final ResponseWriter responseWriter){
+        if (!resourceExists(requestLine)) {
+            LOGGER.info("Sending not found response...");
+            responseWriter.writeNotFound();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkMethodAllowed(final RequestLine requestLine, final ResponseWriter responseWriter){
+        if (!isMethodAllowed(requestLine)) {
+            LOGGER.info("Sending method not allowed response...");
+            responseWriter.writeMethodNotAllowed();
+            return false;
+        }
+        return true;
     }
 
     private RequestLine parseRequestLine(String line) throws MalformedRequestException {
@@ -94,6 +137,9 @@ class RequestHandler {
         if (uri.startsWith("/")) {
             uri = uri.substring(1);
         }
+
+        // avoiding reaching any file (especially /etc/shadow) by typing a bunch of '../' and then the absolute path
+        uri = uri.replaceAll("\\.{2}", ".");
 
         return rootDirectory.resolve(uri);
     }

@@ -4,6 +4,9 @@ import server.http.HttpServer;
 import server.http.HttpServerFactory;
 import server.http.ServerCreationException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Main {
     private static final String PORT_PROPERTY = "port";
     private static final String ROOT_DIRECTORY_PROPERTY = "rootDirectory";
@@ -20,9 +23,7 @@ public class Main {
 
             httpServer.listen();
         } catch (ServerCreationException e) {
-            System.out.println("Could not create server!");
-
-            e.printStackTrace();
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Could not create server: " + e.getMessage(), e);
         }
     }
 }
