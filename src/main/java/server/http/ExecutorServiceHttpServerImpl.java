@@ -1,13 +1,13 @@
 package server.http;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 class ExecutorServiceHttpServerImpl implements HttpServer {
     private static final Logger LOGGER = Logger.getLogger(ExecutorServiceHttpServerImpl.class.getName());
@@ -38,7 +38,7 @@ class ExecutorServiceHttpServerImpl implements HttpServer {
         return new ExecutorServiceHttpServerImpl(executorService, listenerWorker, port);
     }
 
-    ExecutorServiceHttpServerImpl(ExecutorService executorService, ListenerWorker listenerWorker, int port) {
+    private ExecutorServiceHttpServerImpl(ExecutorService executorService, ListenerWorker listenerWorker, int port) {
         this.executorService = executorService;
         this.listenerWorker = listenerWorker;
         this.port = port;
@@ -48,7 +48,7 @@ class ExecutorServiceHttpServerImpl implements HttpServer {
     public void listen() {
         executorService.submit(listenerWorker::listen);
 
-        LOGGER.info("Listener loop started on port " + port);
+        LOGGER.info(() -> "Listener loop started on port " + port);
     }
 
     @Override
