@@ -1,11 +1,12 @@
-package server.http;
-
-import static java.util.logging.Level.SEVERE;
+package simple.http.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.SEVERE;
 
 class ListenerWorker {
     private static final Logger LOGGER = Logger.getLogger(ListenerWorker.class.getName());
@@ -14,11 +15,11 @@ class ListenerWorker {
 
     private final ServerSocket serverSocket;
 
-    private final RequestHandlerFactory requestHandlerFactory;
+    private final Consumer<Socket> connectionHandler;
 
-    ListenerWorker(ServerSocket serverSocket, RequestHandlerFactory requestHandlerFactory) {
+    ListenerWorker(ServerSocket serverSocket, Consumer<Socket> connectionHandler) {
         this.serverSocket = serverSocket;
-        this.requestHandlerFactory = requestHandlerFactory;
+        this.connectionHandler = connectionHandler;
     }
 
     void listen() {
@@ -40,9 +41,7 @@ class ListenerWorker {
 
                 LOGGER.info("Received a new connection.");
 
-                final RequestHandler handler = requestHandlerFactory.handling(socket);
-
-                handler.handle();
+                connectionHandler.accept(socket);
             }
         } catch (Exception e) {
             LOGGER.log(SEVERE, "Exception encountered in listener loop!", e);

@@ -1,4 +1,4 @@
-package server.http;
+package simple.http.server;
 
 public class ServerCreationException extends Exception {
     public ServerCreationException(String message) {
