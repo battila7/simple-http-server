@@ -16,12 +16,12 @@ public final class HttpServerFactory {
          */
     }
 
-    public static HttpServer makeServer(int port, String rootDirectory) throws ServerCreationException {
-        if (port < MIN_PORT_NUMBER || port > MAX_PORT_NUMBER) {
+    public static HttpServer makeServer(HttpServerConfiguration configuration) throws ServerCreationException {
+        if (configuration.getPort() < MIN_PORT_NUMBER || configuration.getPort() > MAX_PORT_NUMBER) {
             throw new ServerCreationException("Invalid port!");
         }
 
-        if (Files.notExists(currentPath.resolve(rootDirectory))) {
+        if (Files.notExists(currentPath.resolve(configuration.getRootDirectory()))) {
             throw new ServerCreationException("Invalid directory!");
         }
 
