@@ -3,9 +3,6 @@ package simple.http.request;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class Request {
     private final Method method;
 
@@ -17,16 +14,16 @@ public class Request {
 
     private final byte[] body;
 
+    static Builder builder() {
+        return new Builder();
+    }
+
     private Request(Builder builder) {
         this.method = builder.method;
         this.uri = builder.uri;
         this.queryParameters = builder.queryParameters;
         this.headers = builder.headers;
         this.body = builder.body;
-    }
-
-    static Builder builder() {
-        return new Builder();
     }
 
     public Method getMethod() {
@@ -49,7 +46,7 @@ public class Request {
         return body;
     }
 
-    public static class Builder {
+    static final class Builder {
         private Method method;
 
         private String uri;
@@ -60,31 +57,37 @@ public class Request {
 
         private byte[] body;
 
-        public Builder method(Method method) {
+        private Builder() {
+            /*
+             * Prevent instantiation.
+             */
+        }
+
+        Builder method(Method method) {
             this.method = method;
 
             return this;
         }
 
-        public Builder uri(String uri) {
+        Builder uri(String uri) {
             this.uri = uri;
 
             return this;
         }
 
-        public Builder queryParameters(Map<String, List<String>> queryParameters) {
+        Builder queryParameters(Map<String, List<String>> queryParameters) {
             this.queryParameters = queryParameters;
 
             return this;
         }
 
-        public Builder headers(Map<String, String> headers) {
+        Builder headers(Map<String, String> headers) {
             this.headers = headers;
 
             return this;
         }
 
-        public Builder body(byte[] body) {
+        Builder body(byte[] body) {
             this.body = body;
 
             return this;

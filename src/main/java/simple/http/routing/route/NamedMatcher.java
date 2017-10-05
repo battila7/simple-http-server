@@ -12,11 +12,7 @@ public class NamedMatcher implements Matcher {
         return new NamedMatcher(name, requireNonNull(matcher));
     }
 
-    NamedMatcher(Matcher innerMatcher) {
-        this(null, innerMatcher);
-    }
-
-    NamedMatcher(String name, Matcher innerMatcher) {
+    private NamedMatcher(String name, Matcher innerMatcher) {
         this.name = name;
         this.innerMatcher = innerMatcher;
     }

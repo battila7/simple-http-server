@@ -14,8 +14,6 @@ public final class HttpServerFactory {
     private static final int MIN_PORT_NUMBER = 1;
     private static final int MAX_PORT_NUMBER = 65535;
 
-    private static final Path currentPath = Paths.get(".");
-
     private HttpServerFactory() {
         /*
          * Prevent instantiation.
@@ -46,6 +44,10 @@ public final class HttpServerFactory {
     private static void assertConfiguration(HttpServerConfiguration configuration) throws ServerCreationException {
         if (configuration.getPort() < MIN_PORT_NUMBER || configuration.getPort() > MAX_PORT_NUMBER) {
             throw new ServerCreationException("Invalid port!");
+        }
+
+        if (configuration.getControllers().isEmpty()) {
+            throw  new ServerCreationException("There are no controllers set up!");
         }
     }
 }

@@ -4,6 +4,8 @@ import simple.http.filter.Filter;
 import simple.http.routing.Controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class HttpServerConfiguration {
@@ -35,7 +37,7 @@ public class HttpServerConfiguration {
         return controllers;
     }
 
-    public static class Builder {
+    public static final class Builder {
         private int port;
 
         private final List<Filter> filters;
@@ -53,14 +55,14 @@ public class HttpServerConfiguration {
             return this;
         }
 
-        public Builder filter(Filter filter) {
-            this.filters.add(filter);
+        public Builder filter(Filter... filters) {
+            this.filters.addAll(Arrays.asList(filters));
 
             return this;
         }
 
-        public Builder controller(Controller controller) {
-            this.controllers.add(controller);
+        public Builder controller(Controller... controllers) {
+            this.controllers.addAll(Arrays.asList(controllers));
 
             return this;
         }

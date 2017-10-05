@@ -7,9 +7,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.*;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class RequestReader {
     private static final String EMPTY_LINE = "";
     private static final char HEADER_SEPARATOR = ':';
@@ -21,7 +18,7 @@ public class RequestReader {
         return new RequestReader(Objects.requireNonNull(socket));
     }
 
-    public RequestReader(Socket socket) {
+    private RequestReader(Socket socket) {
         this.socket = socket;
     }
 
@@ -105,12 +102,12 @@ public class RequestReader {
         return bytes;
     }
 
-    private static class RequestLine {
+    private static final class RequestLine {
         private final String method;
 
         private final String uri;
 
-        RequestLine(String method, String uri) {
+        private RequestLine(String method, String uri) {
             this.method = method;
             this.uri = uri;
         }

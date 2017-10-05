@@ -26,7 +26,7 @@ public class Mapping {
         return handlerMethod;
     }
 
-    public static class Builder {
+    public static final class Builder {
         private final Route route;
 
         private HandlerMethod handlerMethod;

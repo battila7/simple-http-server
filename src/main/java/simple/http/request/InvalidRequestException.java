@@ -1,8 +1,5 @@
 package simple.http.request;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class InvalidRequestException extends Exception {
     public InvalidRequestException(String message) {
         super(message);

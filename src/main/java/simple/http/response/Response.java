@@ -42,7 +42,7 @@ public class Response {
 
         private ByteArrayOutputStream byteArrayOutputStream;
 
-        public Builder() {
+        private Builder() {
             this.headers = new HashMap<>();
             this.byteArrayOutputStream = new ByteArrayOutputStream(0);
         }
