@@ -1,6 +1,6 @@
 package simple.http.response;
 
-public enum HttpStatus {
+public enum Status {
     OK(200, "OK"),
     NOT_FOUND(404, "Not Found"),
     METHOD_NOT_ALLOWED(405, "Method Not Allowed"),
@@ -10,7 +10,7 @@ public enum HttpStatus {
 
     private final String phrase;
 
-    HttpStatus(int code, String phrase) {
+    Status(int code, String phrase) {
         this.code = code;
         this.phrase = phrase;
     }

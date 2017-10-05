@@ -19,6 +19,8 @@ public class Main {
         try {
             final HttpServerConfiguration configuration = HttpServerConfiguration.builder()
                     .port(port)
+                    .filter(new ContentLengthSetterFilter())
+                    .controller(new HelloController())
                     .build();
 
             final HttpServer server = HttpServerFactory.makeServer(configuration);

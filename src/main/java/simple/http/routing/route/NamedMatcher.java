@@ -1,6 +1,6 @@
 package simple.http.routing.route;
 
-import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -30,7 +30,7 @@ public class NamedMatcher implements Matcher {
     }
 
     public boolean hasName() {
-        return isNull(name);
+        return nonNull(name);
     }
 
     public String getName() {

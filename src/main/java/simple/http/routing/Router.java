@@ -1,15 +1,12 @@
 package simple.http.routing;
 
 import simple.http.request.Request;
-import simple.http.response.ResponseBuilder;
+import simple.http.response.Response;
 import simple.http.routing.route.MatcherResult;
 import simple.http.routing.route.NamedMatcher;
 import simple.http.routing.route.Route;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Attila on 17/10/05.
@@ -31,12 +28,16 @@ public class Router {
         return filter;
     }
 
-    private boolean route(Request request, ResponseBuilder responseBuilder) {
+    private boolean route(Request request, Response.Builder responseBuilder) {
         for (final Mapping mapping : mappingRegistry.getMappings()) {
-            final Optional<Map<String, String>> matchResult = tryMatch(request.getUri(), mapping.getRoute());
+            final Optional<Map<String, String>> matchResult = matchRoute(request, mapping.getRoute());
 
             if (matchResult.isPresent()) {
-                mapping.getHandlerMethod().handleRequest(request, responseBuilder, matchResult.get());
+                try {
+                    mapping.getHandlerMethod().handleRequest(request, responseBuilder, matchResult.get());
+                } catch (Exception e) {
+                    throw new HandlerMethodExecutionException(mapping.getHandlerMethod(), e);
+                }
 
                 return true;
             }
@@ -45,8 +46,16 @@ public class Router {
         return false;
     }
 
-    private Optional<Map<String, String>> tryMatch(String uri, Route route) {
-        final Iterator<NamedMatcher> matcherIterator = route.getMatchers().iterator();
+    private Optional<Map<String, String>> matchRoute(Request request, Route route) {
+        if (request.getMethod() != route.getMethod()) {
+            return Optional.empty();
+        }
+
+        return matchUri(request.getUri(), route.getMatchers());
+    }
+
+    private Optional<Map<String, String>> matchUri(String uri, List<NamedMatcher> matchers) {
+        final Iterator<NamedMatcher> matcherIterator = matchers.iterator();
         final Map<String, String> segments = new HashMap<>();
 
         String remaining = uri;
@@ -75,7 +84,7 @@ public class Router {
 
     private class Filter implements simple.http.filter.Filter {
         @Override
-        public void filter(Request request, ResponseBuilder responseBuilder, Runnable nextFilter) {
+        public void filter(Request request, Response.Builder responseBuilder, Runnable nextFilter) {
             if (!Router.this.route(request, responseBuilder)) {
                 throw new NoHandlerFoundException(request.getUri());
             }

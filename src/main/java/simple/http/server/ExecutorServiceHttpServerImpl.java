@@ -1,11 +1,10 @@
 package simple.http.server;
 
 import simple.http.filter.FilterChain;
-import simple.http.request.InvalidRequestException;
 import simple.http.request.MalformedRequestException;
 import simple.http.request.Request;
 import simple.http.request.RequestReader;
-import simple.http.response.ResponseBuilder;
+import simple.http.response.Response;
 import simple.http.response.ResponseWriter;
 import simple.http.routing.Router;
 
@@ -94,11 +93,11 @@ class ExecutorServiceHttpServerImpl extends AbstractHttpServer {
             final RequestReader reader = RequestReader.from(socket);
             final Request request = reader.parseRequest();
 
-            final ResponseBuilder responseBuilder = new ResponseBuilder();
+            final Response.Builder responseBuilder = Response.builder();
 
             getFilterChain().walkChain(request, responseBuilder);
 
-            final ResponseWriter writer = ResponseWriter.from(socket, responseBuilder);
+            final ResponseWriter writer = ResponseWriter.from(socket, responseBuilder.build());
             writer.respond();
         } finally {
             socket.close();

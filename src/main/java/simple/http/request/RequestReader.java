@@ -26,24 +26,27 @@ public class RequestReader {
     }
 
     public Request parseRequest() throws MalformedRequestException, IOException {
-        try (InputStream inputStream = socket.getInputStream();
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            final Request.Builder builder = Request.builder();
+        /*
+         * Intentionally left open, closing them would close the socket.
+         */
+        final InputStream inputStream = socket.getInputStream();
+        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-            final RequestLine requestLine = parseRequestLine(bufferedReader.readLine());
+        final Request.Builder builder = Request.builder();
 
-            builder.method(Method.valueOf(requestLine.method))
-                .uri(requestLine.uri);
+        final RequestLine requestLine = parseRequestLine(bufferedReader.readLine());
 
-            // TODO: Replace with actual parsing
-            builder.queryParameters(Collections.emptyMap());
+        builder.method(Method.valueOf(requestLine.method))
+            .uri(requestLine.uri);
 
-            builder.headers(parseHeaders(bufferedReader));
+        // TODO: Replace with actual parsing
+        builder.queryParameters(Collections.emptyMap());
 
-            builder.body(readBody(bufferedReader));
+        builder.headers(parseHeaders(bufferedReader));
 
-            return builder.build();
-        }
+        builder.body(readBody(bufferedReader));
+
+        return builder.build();
     }
 
     private RequestLine parseRequestLine(String line) throws MalformedRequestException {

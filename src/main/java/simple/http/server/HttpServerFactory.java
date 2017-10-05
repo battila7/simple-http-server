@@ -36,6 +36,9 @@ public final class HttpServerFactory {
 
         final FilterChain filterChain = new FilterChain(filters);
 
+        configuration.getControllers()
+                .forEach(controller -> controller.registerHandlers(mappingRegistry));
+
         return ExecutorServiceHttpServerImpl.builder()
                 .filterChain(filterChain)
                 .router(router)

@@ -1,7 +1,7 @@
 package simple.http.filter;
 
 import simple.http.request.Request;
-import simple.http.response.ResponseBuilder;
+import simple.http.response.Response;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +16,7 @@ public class FilterChain {
         this.filters = filters;
     }
 
-    public void walkChain(Request request, ResponseBuilder responseBuilder) {
+    public void walkChain(Request request, Response.Builder responseBuilder) {
         if (filters.isEmpty()) {
             return;
         }
@@ -26,7 +26,7 @@ public class FilterChain {
         callNextFilter(request, responseBuilder, filterIterator);
     }
 
-    private void callNextFilter(Request request, ResponseBuilder responseBuilder, Iterator<Filter> filterIterator) {
+    private void callNextFilter(Request request, Response.Builder responseBuilder, Iterator<Filter> filterIterator) {
         if (filterIterator.hasNext()) {
             final Filter filter = filterIterator.next();
 
