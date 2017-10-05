@@ -8,9 +8,6 @@ import simple.http.routing.route.Route;
 
 import java.util.*;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class Router {
     private static final String EMPTY_ROUTE = "";
 

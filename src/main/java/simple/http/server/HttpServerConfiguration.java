@@ -1,14 +1,11 @@
 package simple.http.server;
 
-import simple.http.routing.Controller;
 import simple.http.filter.Filter;
+import simple.http.routing.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class HttpServerConfiguration {
     private final int port;
 

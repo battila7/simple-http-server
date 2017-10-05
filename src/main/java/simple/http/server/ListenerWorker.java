@@ -1,12 +1,12 @@
 package simple.http.server;
 
-import static java.util.logging.Level.SEVERE;
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.SEVERE;
 
 class ListenerWorker {
     private static final Logger LOGGER = Logger.getLogger(ListenerWorker.class.getName());

@@ -9,9 +9,7 @@ import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 import static simple.http.routing.route.NamedMatcher.named;
 
-/**
- * Created by Attila on 17/10/05.
- */
+
 public class Route {
     private final Method method;
 

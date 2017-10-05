@@ -4,9 +4,6 @@ import simple.http.routing.route.Route;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class Mapping {
     private final Route route;
 

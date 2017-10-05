@@ -3,9 +3,6 @@ package simple.http.routing.route;
 import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class NamedMatcher implements Matcher {
     private final String name;
 

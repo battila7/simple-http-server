@@ -6,9 +6,6 @@ import java.util.Objects;
 
 import static java.util.Collections.unmodifiableList;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class MappingRegistry {
     private final List<Mapping> mappings;
 

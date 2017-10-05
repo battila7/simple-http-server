@@ -2,9 +2,6 @@ package simple.http.routing.route;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * Created by Attila on 2017. 10. 05..
- */
 public class MatcherResult {
     /**
      * By using {@code new}, we ensure that the instance is not pooled. Therefore it is only going to be ==

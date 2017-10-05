@@ -2,9 +2,6 @@ package simple.http.routing.route;
 
 import static simple.http.routing.route.MatcherResult.success;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public enum CatchAll implements Matcher {
     INSTANCE;
 

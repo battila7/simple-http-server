@@ -6,9 +6,6 @@ import simple.http.response.Response;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class FilterChain {
     private final List<Filter> filters;
 

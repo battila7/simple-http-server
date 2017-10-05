@@ -5,9 +5,6 @@ import simple.http.routing.Router;
 
 import java.net.ServerSocket;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public abstract class AbstractHttpServer implements HttpServer {
     private final FilterChain filterChain;
 

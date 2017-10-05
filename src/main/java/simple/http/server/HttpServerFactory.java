@@ -2,12 +2,9 @@ package simple.http.server;
 
 import simple.http.filter.Filter;
 import simple.http.filter.FilterChain;
-import simple.http.request.RequestReader;
-import simple.http.response.ResponseWriter;
 import simple.http.routing.MappingRegistry;
 import simple.http.routing.Router;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;

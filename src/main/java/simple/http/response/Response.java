@@ -6,9 +6,6 @@ import java.util.Map;
 
 import static java.util.Collections.unmodifiableMap;
 
-/**
- * Created by Attila on 17/10/05.
- */
 public class Response {
     private final Status status;
 

@@ -4,9 +4,6 @@ import simple.http.filter.Filter;
 import simple.http.request.Request;
 import simple.http.response.Response;
 
-/**
- * Created by Attila on 2017. 10. 05..
- */
 public class ContentLengthSetterFilter implements Filter {
     @Override
     public void filter(Request request, Response.Builder responseBuilder, Runnable nextFilter) {

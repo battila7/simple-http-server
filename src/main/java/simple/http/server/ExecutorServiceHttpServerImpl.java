@@ -8,15 +8,15 @@ import simple.http.response.Response;
 import simple.http.response.ResponseWriter;
 import simple.http.routing.Router;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static java.util.logging.Level.WARNING;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.logging.Level.WARNING;
 
 class ExecutorServiceHttpServerImpl extends AbstractHttpServer {
     private static final Logger LOGGER = Logger.getLogger(ExecutorServiceHttpServerImpl.class.getName());

@@ -1,8 +1,5 @@
 package simple.http.routing;
 
-/**
- * Created by Attila on 2017. 10. 05..
- */
 public class HandlerMethodExecutionException extends RuntimeException {
     private static final String MESSAGE_TEMPLATE = "Could not execute handler method (%s).";
 

@@ -15,9 +15,6 @@ import static simple.http.routing.Mapping.mapping;
 import static simple.http.routing.route.CatchAll.catchAll;
 import static simple.http.routing.route.Route.method;
 
-/**
- * Created by Attila on 2017. 10. 05..
- */
 public class HelloController implements Controller {
     @Override
     public void registerHandlers(MappingRegistry mappingRegistry) {
