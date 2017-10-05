@@ -89,5 +89,9 @@ public class Request {
 
             return this;
         }
+
+        public Request build() {
+            return new Request(this);
+        }
     }
 }

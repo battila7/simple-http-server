@@ -77,7 +77,7 @@ public class Router {
         @Override
         public void filter(Request request, ResponseBuilder responseBuilder, Runnable nextFilter) {
             if (!Router.this.route(request, responseBuilder)) {
-                // throw fail
+                throw new NoHandlerFoundException(request.getUri());
             }
 
             nextFilter.run();

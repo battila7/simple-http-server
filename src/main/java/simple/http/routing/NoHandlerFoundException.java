@@ -8,7 +8,7 @@ public class NoHandlerFoundException extends RuntimeException {
 
     private final String uri;
 
-    public NoHandlerFoundException(String uri, String message) {
+    public NoHandlerFoundException(String uri) {
         super(String.format(MESSAGE_TEMPLATE, uri));
 
         this.uri = uri;

@@ -2,6 +2,7 @@ package simple.http.server;
 
 import simple.http.filter.FilterChain;
 import simple.http.request.InvalidRequestException;
+import simple.http.request.MalformedRequestException;
 import simple.http.request.Request;
 import simple.http.request.RequestReader;
 import simple.http.response.ResponseBuilder;
@@ -88,16 +89,22 @@ class ExecutorServiceHttpServerImpl extends AbstractHttpServer {
         });
     }
 
-    private void handleRequestInternal(Socket socket) throws InvalidRequestException {
-        final RequestReader reader = RequestReader.from(socket);
-        final Request request = reader.parseRequest();
+    private void handleRequestInternal(Socket socket) throws MalformedRequestException, IOException {
+        try {
+            final RequestReader reader = RequestReader.from(socket);
+            final Request request = reader.parseRequest();
 
-        final ResponseBuilder responseBuilder = new ResponseBuilder();
+            final ResponseBuilder responseBuilder = new ResponseBuilder();
 
-        getFilterChain().walkChain(request, responseBuilder);
+            getFilterChain().walkChain(request, responseBuilder);
 
-        final ResponseWriter writer = ResponseWriter.from(socket, responseBuilder);
-        writer.respond();
+            final ResponseWriter writer = ResponseWriter.from(socket, responseBuilder);
+            writer.respond();
+        } finally {
+            socket.close();
+
+            LOGGER.info("Transmission over, socket closed");
+        }
     }
 
     static class Builder {
