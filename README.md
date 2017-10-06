@@ -28,4 +28,4 @@ By default, the application will listen on port `9090`.
 
 ## Why did you write this?
 
-I did not intend to, but I caught myself thinking about it, so I eventually to gave in. Fortunately, it was fun.
+I did not intend to, but I caught myself thinking about it, so I eventually gave in. Fortunately, it was fun.
